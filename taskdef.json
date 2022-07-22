@@ -1,0 +1,70 @@
+{
+  "executionRoleArn": "arn:aws:iam::$AWS_ACCOUNT_ID:role/$APP_NAME-task-execution-role",
+  "containerDefinitions": [
+    {
+      "image": "<IMAGE1_NAME>",
+      "name": "app-container",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/ecs/$APP_NAME",
+          "awslogs-region": "$AWS_DEFAULT_REGION",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ],
+      "environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "production"
+        },
+        {
+          "name": "APP_NAME",
+          "value": "$APP_NAME"
+        }
+      ],
+      "mountPoints": [],
+      "secrets": [
+        {
+          "valueFrom": "/$APP_NAME/DB_HOST",
+          "name": "DB_HOST"
+        },
+        {
+          "valueFrom": "/$APP_NAME/DB_NAME",
+          "name": "DB_NAME"
+        },
+        {
+          "valueFrom": "/$APP_NAME/DB_PASS",
+          "name": "DB_PASS"
+        },
+        {
+          "valueFrom": "/$APP_NAME/DB_PORT",
+          "name": "DB_PORT"
+        },
+        {
+          "valueFrom": "/$APP_NAME/DB_USER",
+          "name": "DB_USER"
+        }
+      ]
+    }
+  ],
+  "placementConstraints": [],
+  "family": "$APP_NAME-td",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "volumes": [],
+  "networkMode": "awsvpc",
+  "memory": "512",
+  "cpu": "256"
+}
