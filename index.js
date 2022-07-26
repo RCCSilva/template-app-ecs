@@ -11,7 +11,7 @@ const port = 3000
 const router = express.Router()
 
 router.get('/', (req, res) => {
-  res.status(200).send({ status: 'ok', message: 'Root of service!', name: APP_NAME })
+  res.status(200).send({ status: 'ok', message: 'Root of service!', name: APP_NAME, version: 'V2!' })
 })
 
 router.get('/health', (req, res) => {
